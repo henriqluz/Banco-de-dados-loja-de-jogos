@@ -1,0 +1,81 @@
+CREATE TABLE Cliente 
+( 
+ Id_Cliente INT PRIMARY KEY,  
+ Nome VARCHAR(200),  
+ Telefone VARCHAR(20),  
+ Email VARCHAR(50),  
+ Senha VARCHAR(50)  
+); 
+
+CREATE TABLE Endereco 
+( 
+ id_Endereco INT PRIMARY KEY,
+ Estado VARCHAR(50),  
+ Cidade VARCHAR(50),  
+ Rua VARCHAR(50),  
+ Bairro VARCHAR(50),  
+ Cep VARCHAR(10),  
+ idCliente INT,  
+ FOREIGN KEY(idCliente) REFERENCES Cliente(Id_Cliente) 
+); 
+
+CREATE TABLE Tabela 
+( 
+ idTabela INT PRIMARY KEY,
+ CartaoCredito VARCHAR(50),  
+ Parcelas VARCHAR(10)
+); 
+
+CREATE TABLE Boleto 
+( 
+ idBoleto INT PRIMARY KEY,
+ Data_Pagamento DATE,  
+ Data_Vencimento DATE
+); 
+
+CREATE TABLE Pedido 
+( 
+ Numero_Pedido INT PRIMARY KEY,  
+ Para_Regiao VARCHAR(50),  
+ Para_Rua VARCHAR(200),  
+ Para_Cidade VARCHAR(50),  
+ Para_CEP VARCHAR(10),  
+ Data_Compra DATE,  
+ Data_Envio DATE,  
+ idCliente INT,  
+ idEndereco INT,
+ FOREIGN KEY(idCliente) REFERENCES Cliente(Id_Cliente),
+ FOREIGN KEY(idEndereco) REFERENCES Endereco(id_Endereco)
+); 
+
+CREATE TABLE Jogo 
+( 
+ Id_Jogo INT PRIMARY KEY,  
+ Nome VARCHAR(50),  
+ Preco VARCHAR(10),  
+ idPedido INT,  
+ FOREIGN KEY(idPedido) REFERENCES Pedido(Numero_Pedido)
+); 
+
+CREATE TABLE Categoria 
+( 
+ Id_Categoria INT PRIMARY KEY,  
+ Nome_Categoria VARCHAR(200),  
+ Descricao VARCHAR(100),  
+ idJogo INT,  
+ FOREIGN KEY(idJogo) REFERENCES Jogo(Id_Jogo)
+); 
+
+CREATE TABLE Pagamento 
+( 
+ Id_Pagamento INT PRIMARY KEY,  
+ Estado_Pagamento VARCHAR(50),  
+ Valor VARCHAR(20),  
+ idPedido INT,  
+ idTabelaPagamento INT,  
+ idBoletoPagamento INT,  
+ FOREIGN KEY(idPedido) REFERENCES Pedido(Numero_Pedido),  
+ FOREIGN KEY(idTabelaPagamento) REFERENCES Tabela(idTabela),  
+ FOREIGN KEY(idBoletoPagamento) REFERENCES Boleto(idBoleto)  
+);
+
